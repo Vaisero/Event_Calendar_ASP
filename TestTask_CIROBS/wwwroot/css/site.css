@@ -7,9 +7,10 @@ table {
     margin-top: 20px;
 }
 
-.calendar-header {
-    text-align: center;
-    margin-bottom: 10px;
+.calendar_buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #monthYear {
@@ -18,9 +19,14 @@ table {
 }
 
 button {
+    width: 110px;
+    height: 51px;
+    font-size: 30px;
+    margin: 3px;
+}
+
+.calendar_header {
     text-align: center;
-    padding: 5px 10px;
-    margin: 0 5px;
-    font-size: 18px;
+    margin-bottom: 10px;
 }
 
