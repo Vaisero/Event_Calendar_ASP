@@ -10,7 +10,6 @@ table {
 .calendar_buttons {
     display: flex;
     justify-content: center;
-    align-items: center;
 }
 
 #monthYear {
@@ -30,3 +29,7 @@ button {
     margin-bottom: 10px;
 }
 
+main {
+    min-height: calc(82vh - 30px - 18px);
+    width: 100%;
+}
