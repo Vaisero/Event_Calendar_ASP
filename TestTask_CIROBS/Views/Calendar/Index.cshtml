@@ -1,0 +1,38 @@
+﻿@{
+    ViewData["Title"] = "Calendar";
+}
+@model CalendarViewModel
+
+<h1>@ViewData["Title"]</h1>
+
+<div>
+    <h2>Выберите месяц:</h2>
+    <form method="get" asp-action="Index">
+        <select asp-for="SelectedMonth" asp-items="Model.AvailableMonths"></select>
+        <button type="submit">Показать</button>
+    </form>
+</div>
+
+@if (Model.Events != null)
+{
+    <div>
+        <h2>События на @Model.SelectedMonth:</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Дата</th>
+                    <th>Событие</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var evt in Model.Events)
+                {
+                    <tr>
+                        <td>@evt.Date</td>
+                        <td>@evt.Name</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
