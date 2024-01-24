@@ -6,7 +6,7 @@ $(document).ready(function () {
     var currentDate = new Date();
     var currentMonth = currentDate.getMonth();
     var currentYear = currentDate.getFullYear();
-    var selectedDate = currentDate;
+    var today = currentDate.getDate();
 
     // Отображение текущего месяца и года
     $("#monthYear").text(months[currentMonth] + " " + currentYear);
@@ -39,7 +39,8 @@ $(document).ready(function () {
     });
 
     // Заполнение таблицы с датами
-    function fillCalendar(month, year) {
+    function fillCalendar(month, year)
+    {
         var firstDay = new Date(year, month, 0).getDay();
         var daysInMonth = new Date(year, month + 1, 0).getDate();
 
@@ -47,20 +48,33 @@ $(document).ready(function () {
         calendarBody.empty();
 
         var date = 1;
-        for (var i = 0; i < 6; i++) {
-            var row = $("<tr></tr>");
-            for (var j = 0; j < 7; j++) {
-                if (i === 0 && j < firstDay) {
-                    var cell = $("<td></td>");
+
+        for (var i = 0; i < 6; i++)
+        {
+            var row = document.createElement('tr');
+            for (var j = 0; j < 7; j++)
+            {
+                if (i === 0 && j < firstDay)
+                { 
+                    var cell = document.createElement('td');
                     row.append(cell);
-                } else if (date <= daysInMonth) {
-                    var cell = $("<td></td>").text(date);
-                    row.append(cell);
-                    date++;
                 }
+                else
+                    if (date <= daysInMonth)
+                    {
+                        var cell = document.createElement('td');
+                        cell.textContent = date;
+
+                        if (date === today && currentMonth === currentDate.getMonth() && currentYear === currentDate.getFullYear())
+                            cell.classList.add("current_day");
+
+                        row.append(cell);
+                        date++;
+                    }
             }
             calendarBody.append(row);
         }
     }
+
 
 })

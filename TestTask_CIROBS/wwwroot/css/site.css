@@ -33,3 +33,8 @@ main {
     min-height: calc(82vh - 30px - 18px);
     width: 100%;
 }
+
+.current_day {
+    font-weight: bold;
+    color: red;
+}
