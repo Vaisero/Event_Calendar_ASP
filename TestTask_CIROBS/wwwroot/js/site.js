@@ -1,5 +1,6 @@
 ﻿
-$(document).ready(function () {
+$(document).ready(function ()
+{
 
     var months = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
 
@@ -15,11 +16,15 @@ $(document).ready(function () {
     fillCalendar(currentMonth, currentYear);
 
     // Переключение месяцев по стрелке НАЗАД
-    $("#prevBtn").click(function () {
-        if (currentMonth === 0) {
+    $("#prevBtn").click(function ()
+    {
+        if (currentMonth === 0)
+        {
             currentMonth = 11;
             currentYear -= 1;
-        } else {
+        }
+        else
+        {
             currentMonth -= 1;
         }
         $("#monthYear").text(months[currentMonth] + " " + currentYear);
@@ -27,11 +32,15 @@ $(document).ready(function () {
     });
 
     // Переключение месяцев по стрелке ВПЕРЕД
-    $("#nextBtn").click(function () {
-        if (currentMonth === 11) {
+    $("#nextBtn").click(function ()
+    {
+        if (currentMonth === 11)
+        {
             currentMonth = 0;
             currentYear += 1;
-        } else {
+        }
+        else
+        {
             currentMonth += 1;
         }
         $("#monthYear").text(months[currentMonth] + " " + currentYear);
@@ -55,7 +64,7 @@ $(document).ready(function () {
             for (var j = 0; j < 7; j++)
             {
                 if (i === 0 && j < firstDay)
-                { 
+                {
                     var cell = document.createElement('td');
                     row.append(cell);
                 }
@@ -71,6 +80,12 @@ $(document).ready(function () {
                         row.append(cell);
                         date++;
                     }
+                    else
+                        if (i < 5 && j < 7)
+                        {
+                            var cell = document.createElement('td');
+                            row.append(cell);
+                        }
             }
             calendarBody.append(row);
         }
