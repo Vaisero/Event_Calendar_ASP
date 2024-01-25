@@ -13,7 +13,7 @@ $(document).ready(function ()
     $("#monthYear").text(months[currentMonth] + " " + currentYear);
 
     // Создание и заполнение таблицы с датами
-    fillCalendar(currentMonth, currentYear);
+    FillCalendar(currentMonth, currentYear);
 
     // Переключение месяцев по стрелке НАЗАД
     $("#prevBtn").click(function ()
@@ -28,7 +28,7 @@ $(document).ready(function ()
             currentMonth -= 1;
         }
         $("#monthYear").text(months[currentMonth] + " " + currentYear);
-        fillCalendar(currentMonth, currentYear);
+        FillCalendar(currentMonth, currentYear);
     });
 
     // Переключение месяцев по стрелке ВПЕРЕД
@@ -44,11 +44,11 @@ $(document).ready(function ()
             currentMonth += 1;
         }
         $("#monthYear").text(months[currentMonth] + " " + currentYear);
-        fillCalendar(currentMonth, currentYear);
+        FillCalendar(currentMonth, currentYear);
     });
 
     // Заполнение таблицы с датами
-    function fillCalendar(month, year)
+    function FillCalendar(month, year)
     {
         var firstDay = new Date(year, month, 0).getDay();
         var daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -73,6 +73,7 @@ $(document).ready(function ()
                     {
                         var cell = document.createElement('td');
                         cell.textContent = date;
+                        cell.id = date;
 
                         if (date === today && currentMonth === currentDate.getMonth() && currentYear === currentDate.getFullYear())
                             cell.classList.add("current_day");
@@ -90,6 +91,17 @@ $(document).ready(function ()
             calendarBody.append(row);
         }
     }
+
+
+
+    const cells = document.querySelectorAll('#calendarBody td');
+    cells.forEach(cell => {
+        cell.addEventListener('click', () => {
+            const day = cell.getAttribute('id');
+
+            alert(`Вы нажали на день ${day}`);
+        }); 
+    });
 
 
 })

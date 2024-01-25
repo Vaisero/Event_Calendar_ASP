@@ -1,4 +1,16 @@
 
+#calendarBody td{
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+#calendarBody td:hover {
+    background-color: #e0e0e0;
+}
+
 table {
     width: 100%;
 }
@@ -38,3 +50,4 @@ main {
     font-weight: bold;
     color: red;
 }
+
