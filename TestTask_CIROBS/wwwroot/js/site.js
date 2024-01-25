@@ -15,6 +15,9 @@ $(document).ready(function ()
     // Создание и заполнение таблицы с датами
     FillCalendar(currentMonth, currentYear);
 
+    // Создание кнопки на кажом дне месяца
+    CreateButtonDay();
+
     // Переключение месяцев по стрелке НАЗАД
     $("#prevBtn").click(function ()
     {
@@ -29,6 +32,7 @@ $(document).ready(function ()
         }
         $("#monthYear").text(months[currentMonth] + " " + currentYear);
         FillCalendar(currentMonth, currentYear);
+        CreateButtonDay();
     });
 
     // Переключение месяцев по стрелке ВПЕРЕД
@@ -45,9 +49,9 @@ $(document).ready(function ()
         }
         $("#monthYear").text(months[currentMonth] + " " + currentYear);
         FillCalendar(currentMonth, currentYear);
+        CreateButtonDay();
     });
 
-    // Заполнение таблицы с датами
     function FillCalendar(month, year)
     {
         var firstDay = new Date(year, month, 0).getDay();
@@ -92,16 +96,17 @@ $(document).ready(function ()
         }
     }
 
+    function CreateButtonDay()
+    {
+        const cells = document.querySelectorAll('#calendarBody td');
+        cells.forEach(cell => {
+            cell.addEventListener('click', () => {
+                const day = cell.getAttribute('id');
 
-
-    const cells = document.querySelectorAll('#calendarBody td');
-    cells.forEach(cell => {
-        cell.addEventListener('click', () => {
-            const day = cell.getAttribute('id');
-
-            alert(`Вы нажали на день ${day}`);
-        }); 
-    });
+                alert(`Вы нажали на день ${day}`);
+            });
+        });
+    }
 
 
 })
