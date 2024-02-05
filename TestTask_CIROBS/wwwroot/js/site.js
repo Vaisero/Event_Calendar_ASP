@@ -39,7 +39,7 @@ $(document).ready(function ()
         ShowCalendar(currentMonth, currentYear);
     });   
 
-    function CreateButtonOnDay()
+    function ButtonOnDay()
     {
         const cells = document.querySelectorAll('#calendarBody td');
         cells.forEach(cell => {
@@ -47,8 +47,26 @@ $(document).ready(function ()
                 const day = cell.getAttribute('id');
 
                 if (day != null)
-                    alert(`Вы нажали на день ${day}`);
+                {
+                    var date = $(this).attr('data-date');
+                    $.ajax({
+                        url: '/CalendarController/GetEvent',
+                        type: 'GET',
+                        data: { date: date },
 
+                        success: function (data)
+                        {
+                            var event = jQuery.parseJSON(data);
+
+                            $('#eventName').text(event.name);
+                            $('#eventDescription').text(event.description);
+                        },
+                        error: function ()
+                        {   
+                            $('#errorMessage').text('Произошла ошибка при загрузке данных');
+                        }
+                    });
+                }
             });
         });
     }
@@ -104,7 +122,7 @@ $(document).ready(function ()
          // Создание и заполнение таблицы с датами
         FillCalendar(currentMonth, currentYear);     
          // Создание кнопки на каждом дне месяца
-        CreateButtonOnDay();                                           
+        ButtonOnDay();                                           
     }
 
 })
