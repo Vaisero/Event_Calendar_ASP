@@ -45,7 +45,7 @@ $(document).ready(function ()
         cells.forEach(cell => {
             cell.addEventListener('click', () => {
                 const dayId = cell.getAttribute('id');
-                const dayDate = currentYear + currentMonth + dayId;
+                const dayDate = currentYear +"-"+ currentMonth +"-"+ dayId;
                 if (dayId != null)
                     OpenModal(dayDate);
             });
@@ -54,24 +54,24 @@ $(document).ready(function ()
 
     function OpenModal(dayDate)
     {
-        // Открыть модальное окно
         var modal = document.getElementById("myModal");
-        modal.style.display = "block";
-        var event = jQuery.parseJSON(dayDate);
+        modal.style.display = "block";     
 
         $.ajax(
             {
-            url: "/Controllers/CalendarController/GetEvent",
+            url: "/Calendar/GetEvent",
             method: "GET",
-            success: function ()
+            data: { date: dayDate },
+            success: function (data)
             {
-
-                $("#modalData").text(JSON.stringify(event));
+                //var event = jQuery.parseJSON();
+                $("#modalData").text(data.event_name);
+                console.log();
             },
             error: function ()
             {
-                $("#modalData").text('Произошла ошибка при загрузке данных');
-                console.log(event);
+                $("#modalData").text('В данный день нет событий и планов');
+                //console.log();
             }
         });
 
