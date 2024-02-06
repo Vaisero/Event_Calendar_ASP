@@ -7,8 +7,7 @@ namespace TestTask_CIROBS.Controllers
 {
     public class CalendarController : Controller
     {
-        
-        public IActionResult GetEvent(DateTime date) 
+        public IActionResult GetEvent(DateTime date)
         {
             using (var connection = new NpgsqlConnection("ConnectionString"))
             {
@@ -19,7 +18,7 @@ namespace TestTask_CIROBS.Controllers
                     command.CommandType = System.Data.CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("p_date", date);
 
-                    using (var reader = command.ExecuteReader()) 
+                    using (var reader = command.ExecuteReader())
                     {
                         if (reader.Read())
                         {
@@ -41,17 +40,17 @@ namespace TestTask_CIROBS.Controllers
 
             }
         }
-        
 
-        
+
+
+
+
         public IActionResult Index()
         {
             return View();
         }
 
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

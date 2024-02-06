@@ -2,10 +2,10 @@
 $(document).ready(function ()
 {
 
-    var months = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
+    var months = ["","Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
 
     var currentDate = new Date();
-    var currentMonth = currentDate.getMonth();
+    var currentMonth = currentDate.getMonth()+1;
     var currentYear = currentDate.getFullYear();
     var today = currentDate.getDate();
 
@@ -14,9 +14,9 @@ $(document).ready(function ()
     // Переключение месяцев по стрелке НАЗАД
     $("#prevBtn").click(function ()
     {
-        if (currentMonth === 0)
+        if (currentMonth === 1)
         {
-            currentMonth = 11;
+            currentMonth = 12;
             currentYear -= 1;
         }
         else
@@ -28,9 +28,9 @@ $(document).ready(function ()
     // Переключение месяцев по стрелке ВПЕРЕД
     $("#nextBtn").click(function ()
     {
-        if (currentMonth === 11)
+        if (currentMonth === 12)
         {
-            currentMonth = 0;
+            currentMonth = 1;
             currentYear += 1;
         }
         else
@@ -44,30 +44,43 @@ $(document).ready(function ()
         const cells = document.querySelectorAll('#calendarBody td');
         cells.forEach(cell => {
             cell.addEventListener('click', () => {
-                const day = cell.getAttribute('id');
-
-                if (day != null)
-                {
-                    var date = $(this).attr('data-date');
-                    $.ajax({
-                        url: '/CalendarController/GetEvent',
-                        type: 'GET',
-                        data: { date: date },
-
-                        success: function (data)
-                        {
-                            var event = jQuery.parseJSON(data);
-
-                            $('#eventName').text(event.name);
-                            $('#eventDescription').text(event.description);
-                        },
-                        error: function ()
-                        {   
-                            $('#errorMessage').text('Произошла ошибка при загрузке данных');
-                        }
-                    });
-                }
+                const dayId = cell.getAttribute('id');
+                const dayDate = currentYear + currentMonth + dayId;
+                if (dayId != null)
+                    OpenModal(dayDate);
             });
+        });
+    }
+
+    function OpenModal(dayDate)
+    {
+        // Открыть модальное окно
+        var modal = document.getElementById("myModal");
+        modal.style.display = "block";
+        var event = jQuery.parseJSON(dayDate);
+
+        $.ajax(
+            {
+            url: "/Controllers/CalendarController/GetEvent",
+            method: "GET",
+            success: function ()
+            {
+
+                $("#modalData").text(JSON.stringify(event));
+            },
+            error: function ()
+            {
+                $("#modalData").text('Произошла ошибка при загрузке данных');
+                console.log(event);
+            }
+        });
+
+
+        var closeModal = document.getElementsByClassName("close")[0];
+        closeModal.addEventListener("click", function ()
+        {
+            var modal = document.getElementById("myModal");
+            modal.style.display = "none";
         });
     }
 
@@ -96,9 +109,9 @@ $(document).ready(function ()
                     {
                         var cell = document.createElement('td');
                         cell.textContent = date;
-                            cell.id = date;
+                        cell.id = date;
 
-                        if (date === today && currentMonth === currentDate.getMonth() && currentYear === currentDate.getFullYear())
+                        if (date === today && currentMonth === currentDate.getMonth()+1 && currentYear === currentDate.getFullYear())
                             cell.classList.add("current_day"); // Выделение текущего дня
 
                         row.append(cell);
