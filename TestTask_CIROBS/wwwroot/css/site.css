@@ -1,5 +1,9 @@
 
-#calendarBody td{
+body {
+    background-color: lightgoldenrodyellow
+}
+
+#calendarBody td {
     width: 30px;
     height: 30px;
     text-align: center;
@@ -49,4 +53,8 @@ main {
 .current_day {
     font-weight: bold;
     color: red;
+}
+
+.modal {
+    display: none;
 }

@@ -12,7 +12,7 @@ namespace TestTask_CIROBS.Controllers
 
         public IActionResult GetEvent(DateTime date)
         {
-            using (var connection = new NpgsqlConnection("Server=localhost;Port=5432;User Id=devUser;Password=1234;Database=CIROBS;"))
+            using (var connection = new NpgsqlConnection(ConnectionString()))
             {
                 connection.Open();
 
@@ -57,6 +57,16 @@ namespace TestTask_CIROBS.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public string ConnectionString()
+        {
+            var builder = new ConfigurationBuilder();
+            builder.SetBasePath(Directory.GetCurrentDirectory());
+            builder.AddJsonFile("appsettings.json");
+            var config = builder.Build();
+            string connectionString = config.GetConnectionString("ConnectionString");
+            return connectionString;
         }
     }
 }
