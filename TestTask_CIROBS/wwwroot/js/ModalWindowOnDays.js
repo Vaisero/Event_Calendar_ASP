@@ -21,8 +21,11 @@ function OpenModal(dayDate)
 {
     CloseModal();
 
-    var modal = document.getElementById("ModalWindow");
+    var modal = document.getElementsByClassName("modal")[0];
     modal.style.display = "block";
+    var overlay = document.getElementsByClassName("overlay")[0];
+    overlay.style.opacity = 1;
+    overlay.style.visibility = "visible";
 
     $.ajax(
         {
@@ -32,13 +35,14 @@ function OpenModal(dayDate)
 
             success: function (data)
             {
-                $("#modalData").text(data.event_name);
+                var formattedDate = new Date(data.event_date).toLocaleDateString();
+                $(".modalData").text("События на " + formattedDate + " " + data.event_name + " " + data.category_id);
             },
 
             error: function ()
             {
-                $("#modalData").text('В данный день нет событий и планов');
-            }
+                $(".modalData").text("В этот день у тебя нет никаких событий и планов ОТДЫХАЙ! Ты это заслужил)");
+            } 
 
         });
 }
@@ -47,11 +51,14 @@ function OpenModal(dayDate)
 
 function CloseModal()
 {
-    var closeModal = document.getElementsByClassName("closeModal")[0];
+    var modalClose = document.getElementsByClassName("modalClose")[0];
 
-    closeModal.addEventListener("click", function ()
+    modalClose.addEventListener("click", function ()
     {
-        var modal = document.getElementById("ModalWindow");
+        var modal = document.getElementsByClassName("modal")[0];
         modal.style.display = "none";
+        var overlay = document.getElementsByClassName("overlay")[0];
+        overlay.style.opacity = 0;
+        overlay.style.visibility = "hidden";
     });
 }
