@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Diagnostics;
 using Npgsql;
 using System.Data;
 using System.Diagnostics;
@@ -9,14 +8,14 @@ namespace TestTask_CIROBS.Controllers
 {
     public class CalendarController : Controller
     {
-
         public IActionResult GetEvent(DateOnly date)
         {
             using (var connection = new NpgsqlConnection(ConnectionString()))
             {
+                string sql = "Select * from event_read(:p_date)";
                 connection.Open();
 
-                using (var command = new NpgsqlCommand("Select * from event_read(:p_date)", connection))
+                using (var command = new NpgsqlCommand(sql, connection))
                 {
                     command.CommandType = CommandType.Text;
                     command.Parameters.AddWithValue("p_date", date);
@@ -27,9 +26,9 @@ namespace TestTask_CIROBS.Controllers
                         {
                             var EventInfo = new
                             {
-                                event_name = reader.GetString(1),
-                                event_date = reader.GetDateTime(2),
-                                category_id = reader.GetInt32(3)
+                                event_name = reader.GetString(0),
+                                event_date = reader.GetDateTime(1),
+                                category_name = reader.GetString(2)
                             }; 
 
                             return Json(EventInfo);
@@ -40,7 +39,6 @@ namespace TestTask_CIROBS.Controllers
                         }
                     }
                 }
-
             }
         }
 

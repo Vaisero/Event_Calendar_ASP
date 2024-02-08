@@ -36,7 +36,7 @@ function OpenModal(dayDate)
             success: function (data)
             {
                 var formattedDate = new Date(data.event_date).toLocaleDateString();
-                $(".modalData").text("События на " + formattedDate + " " + data.event_name + " " + data.category_id);
+                $(".modalData").text("События на " + formattedDate + " " + data.event_name + " " + data.category_name);
             },
 
             error: function ()
