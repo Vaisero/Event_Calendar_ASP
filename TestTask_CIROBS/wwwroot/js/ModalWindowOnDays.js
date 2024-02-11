@@ -99,5 +99,10 @@ function CreateModalWindow(formattedDate, data)
         .addClass("buttonEdit");
     eventElement.append(buttonEdit);
 
+    var buttonCreate = $("<button>")
+        .text("Создать новое событие")
+        .addClass("buttonCreate");
+    eventElement.append(buttonCreate);
+
     $(".modalData").append(eventElement);
 }

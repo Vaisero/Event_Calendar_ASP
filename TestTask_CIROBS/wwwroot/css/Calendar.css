@@ -169,3 +169,22 @@ main {
     border: none;
     border-radius: 8px;
 }
+
+.buttonCreate {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 6%;
+    margin-left: 5%;
+    margin-bottom: 1%;
+    margin-top: 44%;
+
+    width: 356px;
+    height: 51px;
+    background-color: #4286f4;
+    font-size: 27px;
+    color: white;
+    text-align: center;
+    padding: 4px 31px;
+    border: none;
+    border-radius: 19px;
+}
