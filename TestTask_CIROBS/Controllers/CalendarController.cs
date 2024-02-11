@@ -30,13 +30,42 @@ namespace TestTask_CIROBS.Controllers
                                 event_date = reader.GetDateTime(1),
                                 category_name = reader.GetString(2)
                             }; 
-
                             return Json(EventInfo);
                         }
                         else
-                        {
                             return NotFound();
+                    }
+                }
+            }
+        }
+
+        public IActionResult GetCategoryColor(int month, int year)
+        {
+            using (var connection = new NpgsqlConnection(ConnectionString()))
+            {
+                string sql = "select * from get_color(:p_month, :p_year)";
+                connection.Open();
+
+                using (var command = new NpgsqlCommand(sql, connection))
+                {
+                    command.CommandType = CommandType.Text;
+                    command.Parameters.AddWithValue("p_month", month);
+                    command.Parameters.AddWithValue("p_year", year);
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        List<CategoryColorModel> colors = new List<CategoryColorModel>();
+
+                        while (reader.Read())
+                        {
+                            var EventInfo = new CategoryColorModel
+                            {
+                                event_date = reader.GetInt32(0),
+                                category_color = reader.GetString(1)
+                            };       
+                            colors.Add(EventInfo);
                         }
+                            return Json(colors);
                     }
                 }
             }

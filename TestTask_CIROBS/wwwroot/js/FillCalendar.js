@@ -40,5 +40,28 @@ function FillCalendar(month, year, today, currentMonth, currentDate, currentYear
                     }
         }
         calendarBody.append(row);
+        FillColor(month, year);
     }
+}
+
+function FillColor(month, year)
+{
+    $.ajax(
+        {
+            url: "/Calendar/GetCategoryColor",
+            method: "GET",
+            data: { month: month, year: year },
+
+            success: function (data)
+            {
+                data.forEach(obj =>
+                {
+                    $("#" + obj.event_date).css("background-color", obj.category_color)
+                    console.log(obj.event_date + " " + obj.category_color)
+                });
+            },
+
+            error: function (){}
+        }
+    );
 }
