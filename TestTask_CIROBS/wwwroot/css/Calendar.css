@@ -66,6 +66,8 @@ main {
     max-height: 500px;
     display: none;
 
+    overflow-y: initial;
+
     position: fixed;
     top: 38%;
     left: 50%;
@@ -173,13 +175,15 @@ main {
 .buttonCreate {
     display: flex;
     justify-content: space-between;
-    margin-top: 6%;
-    margin-left: 5%;
-    margin-bottom: 1%;
-    margin-top: 44%;
+    align-items: flex-start;
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
 
     width: 356px;
     height: 51px;
+
     background-color: #4286f4;
     font-size: 27px;
     color: white;
