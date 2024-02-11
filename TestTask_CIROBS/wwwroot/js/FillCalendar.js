@@ -57,7 +57,6 @@ function FillColor(month, year)
                 data.forEach(obj =>
                 {
                     $("#" + obj.event_date).css("background-color", obj.category_color)
-                    console.log(obj.event_date + " " + obj.category_color)
                 });
             },
 

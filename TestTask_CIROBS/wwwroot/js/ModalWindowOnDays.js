@@ -10,16 +10,16 @@ function ButtonOnDay(currentMonth, currentYear)
             const dayId = cell.getAttribute('id');
             const dayDate = currentYear + "-" + currentMonth + "-" + dayId;
             if (dayId != null)
-                OpenModal(dayDate);
+                OpenModalWindow(dayDate);
         });
     });
 }
 
 
 
-function OpenModal(dayDate)
+function OpenModalWindow(dayDate)
 {
-    CloseModal();
+    CloseModalWindow();
 
     var modal = document.getElementsByClassName("modal")[0];
     modal.style.display = "block";
@@ -36,7 +36,8 @@ function OpenModal(dayDate)
             success: function (data)
             {
                 var formattedDate = new Date(data.event_date).toLocaleDateString();
-                $(".modalData").text("События на " + formattedDate + " " + data.event_name + " " + data.category_name);
+                CreateModalWindow(formattedDate, data);
+                //$(".modalData").text("События на " + formattedDate + " " + data.event_name + " " + data.category_name);
             },
 
             error: function ()
@@ -50,9 +51,10 @@ function OpenModal(dayDate)
 
 
 
-function CloseModal()
+function CloseModalWindow()
 {
     var modalClose = document.getElementsByClassName("modalClose")[0];
+    $(".modalData").text("");
 
     modalClose.addEventListener("click", function ()
     {
@@ -62,4 +64,40 @@ function CloseModal()
         overlay.style.opacity = 0;
         overlay.style.visibility = "hidden";
     });
+}
+
+
+
+function CreateModalWindow(formattedDate, data)
+{ 
+    $(".modalData").empty();
+
+    var header = $("<h2>").
+        addClass("modalTitle").
+        text("События на " + formattedDate);
+    $(".modalData").append(header);
+
+    var eventElement = $("<div>").addClass("event");
+
+    var eventText = $("<span>")
+        .text(data.event_name)
+        .addClass("ModalEventText"); 
+    eventElement.append(eventText);
+
+    var categoryText = $("<span>")
+        .text(" Это событие " + data.category_name)
+        .addClass("ModalCategoryText");
+    eventElement.append(categoryText);
+
+    var buttonDelete = $("<button>")
+        .text("Удалить")
+        .addClass("buttonDelete");
+    eventElement.append(buttonDelete);
+
+    var buttonEdit = $("<button>")
+        .text("Изменить")
+        .addClass("buttonEdit");
+    eventElement.append(buttonEdit);
+
+    $(".modalData").append(eventElement);
 }
