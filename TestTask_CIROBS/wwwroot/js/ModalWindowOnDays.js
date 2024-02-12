@@ -35,7 +35,7 @@ function OpenModalWindow(dayDate)
 
             success: function (data)
             {
-                var formattedDate = new Date(data.event_date).toLocaleDateString();
+                var formattedDate = new Date(data[0].event_date).toLocaleDateString();
 
                 CreateModalWindow(formattedDate, data);
             },
@@ -77,32 +77,37 @@ function CreateModalWindow(formattedDate, data)
         text("События на " + formattedDate);
     $(".modalData").append(header);
 
-    var eventElement = $("<div>").addClass("event");
+    data.forEach(obj =>
+    {
+        var eventElement = $("<div>").addClass("event");
 
-    var eventText = $("<span>")
-        .text(data.event_name)
-        .addClass("ModalEventText"); 
-    eventElement.append(eventText);
+        var eventText = $("<span>")
+            .text(obj.event_name)
+            .addClass("ModalEventText");
+        eventElement.append(eventText);
 
-    var categoryText = $("<span>")
-        .text(" Это событие " + data.category_name)
-        .addClass("ModalCategoryText");
-    eventElement.append(categoryText);
+        var categoryText = $("<span>")
+            .text(" Это событие " + obj.category_name)
+            .addClass("ModalCategoryText");
+        eventElement.append(categoryText);
 
-    var buttonDelete = $("<button>")
-        .text("Удалить")
-        .addClass("buttonDelete");
-    eventElement.append(buttonDelete);
+        var buttonDelete = $("<button>")
+            .text("Удалить")
+            .addClass("buttonDelete");
+        eventElement.append(buttonDelete);
 
-    var buttonEdit = $("<button>")
-        .text("Изменить")
-        .addClass("buttonEdit");
-    eventElement.append(buttonEdit);
+        var buttonEdit = $("<button>")
+            .text("Изменить")
+            .addClass("buttonEdit");
+        eventElement.append(buttonEdit);
+
+        $(".modalData").append(eventElement);
+    });
 
     var buttonCreate = $("<button>")
         .text("Создать новое событие")
         .addClass("buttonCreate");
-    eventElement.append(buttonCreate);
+    $(".modalData").append(buttonCreate);
 
-    $(".modalData").append(eventElement);
+    
 }

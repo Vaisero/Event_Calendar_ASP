@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Npgsql;
 using System.Data;
 using System.Diagnostics;
@@ -22,18 +23,19 @@ namespace TestTask_CIROBS.Controllers
 
                     using (var reader = command.ExecuteReader())
                     {
-                        if (reader.Read())
+                        List<EventGetModel> events = new List<EventGetModel>();
+
+                        while (reader.Read())
                         {
-                            var EventInfo = new
+                            var EventInfo = new EventGetModel
                             {
                                 event_name = reader.GetString(0),
                                 event_date = reader.GetDateTime(1),
                                 category_name = reader.GetString(2)
-                            }; 
-                            return Json(EventInfo);
+                            };
+                            events.Add(EventInfo);
                         }
-                        else
-                            return NotFound();
+                        return Json(events);
                     }
                 }
             }
@@ -65,7 +67,19 @@ namespace TestTask_CIROBS.Controllers
                             };       
                             colors.Add(EventInfo);
                         }
-                            return Json(colors);
+                        foreach(var color in colors)
+                        {
+                            if (colors.Where(x => x.event_date == color.event_date).Count() > 1)
+                            {
+                                var tmp = colors.Where(x => x.event_date == color.event_date).ToList();
+
+                                foreach(var item in tmp)
+                                {
+                                    item.category_color = "#6666FF";
+                                }
+                            }
+                        }
+                        return Json(colors);
                     }
                 }
             }
