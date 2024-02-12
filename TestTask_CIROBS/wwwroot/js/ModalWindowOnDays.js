@@ -35,16 +35,19 @@ function OpenModalWindow(dayDate)
 
             success: function (data)
             {
-                var formattedDate = new Date(data[0].event_date).toLocaleDateString();
-
-                CreateModalWindow(formattedDate, data);
+                try
+                {
+                    var formattedDate = new Date(data[0].event_date).toLocaleDateString();
+                    CreateModalWindow(formattedDate, data);
+                }
+                catch
+                {
+                    $(".modalData").text("В этот день у тебя нет никаких событий и планов ОТДЫХАЙ! Ты это заслужил)");
+                    ButtonCreate();
+                }    
             },
 
-            error: function ()
-            {
-                $(".modalData").text("В этот день у тебя нет никаких событий и планов ОТДЫХАЙ! Ты это заслужил)");
-            } 
-
+            error: function () { }
         }
     );
 }
@@ -104,10 +107,13 @@ function CreateModalWindow(formattedDate, data)
         $(".modalData").append(eventElement);
     });
 
+    ButtonCreate(); 
+}
+
+function ButtonCreate()
+{
     var buttonCreate = $("<button>")
         .text("Создать новое событие")
         .addClass("buttonCreate");
     $(".modalData").append(buttonCreate);
-
-    
 }
