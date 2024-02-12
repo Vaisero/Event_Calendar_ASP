@@ -7,5 +7,7 @@
         public DateTime event_date { get; set; }
 
         public string category_name { get; set; }
+
+        public int event_id { get; set; }
     }
 }

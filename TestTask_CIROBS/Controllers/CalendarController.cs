@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Npgsql;
+using System;
 using System.Data;
 using System.Diagnostics;
 using TestTask_CIROBS.Models;
@@ -9,7 +9,7 @@ namespace TestTask_CIROBS.Controllers
 {
     public class CalendarController : Controller
     {
-        public IActionResult GetEvent(DateOnly date)
+        public IActionResult Get_EventRead(DateOnly date)
         {
             using (var connection = new NpgsqlConnection(ConnectionString()))
             {
@@ -31,7 +31,8 @@ namespace TestTask_CIROBS.Controllers
                             {
                                 event_name = reader.GetString(0),
                                 event_date = reader.GetDateTime(1),
-                                category_name = reader.GetString(2)
+                                category_name = reader.GetString(2),
+                                event_id = reader.GetInt32(3)
                             };
                             events.Add(EventInfo);
                         }
@@ -64,16 +65,16 @@ namespace TestTask_CIROBS.Controllers
                             {
                                 event_date = reader.GetInt32(0),
                                 category_color = reader.GetString(1)
-                            };       
+                            };
                             colors.Add(EventInfo);
                         }
-                        foreach(var color in colors)
+                        foreach (var color in colors)
                         {
                             if (colors.Where(x => x.event_date == color.event_date).Count() > 1)
                             {
                                 var tmp = colors.Where(x => x.event_date == color.event_date).ToList();
 
-                                foreach(var item in tmp)
+                                foreach (var item in tmp)
                                 {
                                     item.category_color = "#6666FF";
                                 }
@@ -85,8 +86,35 @@ namespace TestTask_CIROBS.Controllers
             }
         }
 
+        public IActionResult Get_EventDelete(int id)
+        {
+            using (var connection = new NpgsqlConnection(ConnectionString()))
+            {
+                string sql = "SELECT * from public.event_delete(:p_id)";
+                connection.Open();
 
+                using (var command = new NpgsqlCommand(sql, connection))
+                {
+                    command.CommandType = CommandType.Text;
+                    command.Parameters.AddWithValue("p_id", id);
 
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            var EventInfo = new
+                            {
+                                month = reader.GetInt32(0),
+                                year = reader.GetInt32(1)
+                            };
+                            return Json(EventInfo);
+                        }
+                        else
+                            return NotFound();
+                    }
+                }
+            }
+        }
 
 
         public IActionResult Index()

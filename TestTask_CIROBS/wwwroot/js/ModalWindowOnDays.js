@@ -29,7 +29,7 @@ function OpenModalWindow(dayDate)
 
     $.ajax(
         {
-            url: "/Calendar/GetEvent",
+            url: "/Calendar/Get_EventRead",
             method: "GET",
             data: { date: dayDate },
 
@@ -96,18 +96,25 @@ function CreateModalWindow(formattedDate, data)
 
         var buttonDelete = $("<button>")
             .text("Удалить")
-            .addClass("buttonDelete");
+            .addClass("buttonDelete")
+            .attr("id",obj.event_id);
         eventElement.append(buttonDelete);
+       
 
         var buttonEdit = $("<button>")
             .text("Изменить")
-            .addClass("buttonEdit");
+            .addClass("buttonEdit")
+            .attr("id", obj.event_id);
         eventElement.append(buttonEdit);
+
 
         $(".modalData").append(eventElement);
     });
 
     ButtonCreate(); 
+
+
+    buttonDeleteAddEventListener();
 }
 
 function ButtonCreate()

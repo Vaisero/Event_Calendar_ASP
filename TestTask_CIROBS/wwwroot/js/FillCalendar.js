@@ -54,10 +54,12 @@ function FillColor(month, year)
 
             success: function (data)
             {
+                $("td").css("background-color", "lightgoldenrodyellow");
                 data.forEach(obj =>
                 {
                     $("#" + obj.event_date).css("background-color", obj.category_color)
                 });
+
             },
 
             error: function (){}
