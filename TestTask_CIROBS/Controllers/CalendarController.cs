@@ -158,7 +158,7 @@ namespace TestTask_CIROBS.Controllers
         {
             using (var connection = new NpgsqlConnection(ConnectionString()))
             {
-                string sql = "Select * from public.event where event_id = :p_id";
+                string sql = "Select * from event_by_id(:p_id)";
                 connection.Open();
 
                 using (var command = new NpgsqlCommand(sql, connection))
@@ -189,7 +189,7 @@ namespace TestTask_CIROBS.Controllers
         {
             using (var connection = new NpgsqlConnection(ConnectionString()))
             {
-                string sql = "select category_id, category_name from public.category";
+                string sql = "select * from categoty_names";
                 connection.Open();
 
                 using (var command = new NpgsqlCommand(sql, connection))
