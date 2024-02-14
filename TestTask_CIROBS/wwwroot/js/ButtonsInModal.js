@@ -9,6 +9,7 @@ function DeleteButton_AddEventListener()
 {
     $(".buttonDelete").on('click', function (event)
     {
+        if (confirm("Вы точно хотите удалить это событие?") == true)
         $.ajax(
             {
                 url: "/Calendar/GetFunction_EventDelete",
@@ -24,9 +25,10 @@ function DeleteButton_AddEventListener()
                     OpenModalWindow(dayDate);
                 },
 
-                error: function ()
+                error: function (data)
                 {
-                    alert("Произошла ошибка");
+                    console.log(data);
+                    alert("Ошибка: Произошла ошибка при удалении!");
                 }
             }
         );
@@ -44,6 +46,7 @@ function EditButton_AddEventListener()
 
         $("#saveButton").click(function ()
         {
+            if (confirm("Вы точно хотите изменить это событие?") == true)
             if ($("#nameInput").val() && $("#dateInput").val() && $("#categoryInput").val())
                 $.ajax(
                     {
@@ -60,14 +63,15 @@ function EditButton_AddEventListener()
                             OpenModalWindow(dayDate);
                         },
 
-                        error: function ()
+                        error: function (data)
                         {
-                            alert("Произошла ошибка с обновлением события");
+                            console.log(data);
+                            alert("Ошибка: Произошла ошибка с изменением события");
                         }
                     }
                 );
             else
-                alert("Заполните все поля")
+                alert("Ошибка: Заполните все поля!")
         });
 
         $("#cancelButton").click(function ()
@@ -118,17 +122,19 @@ function EditButtonCreate(id)
 
                             eventElement.append(selectStr);
                         },
-                        error: function ()
+                        error: function (data)
                         {
-                            alert("Произошла ошибка с заполнением полей событий");
+                            console.log(data);
+                            alert("Ошибка: Произошла ошибка с заполнением категорий событий");
                         }
                     }
                 );
             },
 
-            error: function ()
+            error: function (data)
             {
-                alert("Произошла ошибка с заполнением полей события");
+                console.log(data);
+                alert("Ошибка: Произошла ошибка с заполнением полей событий");
             }
         }
     );

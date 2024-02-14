@@ -61,9 +61,10 @@ function FillColor(month, year)
                 });
             },
 
-            error: function ()
+            error: function (data)
             {
-                alert("Произошла ошибка");
+                console.log(data);
+                alert("Ошибка: Произошла ошибка с цветами календаря");
             }
         }
     );
