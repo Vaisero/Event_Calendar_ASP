@@ -151,6 +151,39 @@ namespace TestTask_CIROBS.Controllers
             }
         }
 
+        public IActionResult GetFunction_EventCreate(string name, DateOnly date, int category)
+        {
+            using (var connection = new NpgsqlConnection(ConnectionString()))
+            {
+                string sql = "Select * from event_create(:p_name, :p_date, :p_category)";
+                connection.Open();
+
+                using (var command = new NpgsqlCommand(sql, connection))
+                {
+                    command.CommandType = CommandType.Text;
+                    command.Parameters.AddWithValue("p_name", name);
+                    command.Parameters.AddWithValue("p_date", date);
+                    command.Parameters.AddWithValue("p_category", category);
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            var EventInfo = new
+                            {
+                                month = reader.GetInt32(0),
+                                year = reader.GetInt32(1),
+                                day = reader.GetInt32(2)
+                            };
+                            return Json(EventInfo);
+                        }
+                        else
+                            return NotFound();
+                    }
+                }
+            }
+        }
+
 
 
 
@@ -172,9 +205,9 @@ namespace TestTask_CIROBS.Controllers
                         {
                             var EventInfo = new
                             {
-                                event_name = reader.GetString(1),
-                                event_date = reader.GetDateTime(2),
-                                category_id = reader.GetInt32(3)
+                                event_name = reader.GetString(0),
+                                event_date = reader.GetDateTime(1),
+                                category_id = reader.GetInt32(2)
                             };
                             return Json(EventInfo);
                         }
@@ -189,7 +222,7 @@ namespace TestTask_CIROBS.Controllers
         {
             using (var connection = new NpgsqlConnection(ConnectionString()))
             {
-                string sql = "select * from categoty_names";
+                string sql = "SELECT * from category_names()";
                 connection.Open();
 
                 using (var command = new NpgsqlCommand(sql, connection))

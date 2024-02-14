@@ -11,7 +11,6 @@
 
     ShowCalendar();
 
-
     // Переключение месяцев по стрелке НАЗАД
     $("#prevBtn").click(function ()
     {

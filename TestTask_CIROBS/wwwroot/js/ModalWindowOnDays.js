@@ -2,6 +2,8 @@
 
 function ButtonOnDay(currentMonth, currentYear)
 {
+    CreateButton_AddEventListener();
+
     const cells = document.querySelectorAll('#calendarBody td');
     cells.forEach(cell =>
     {
@@ -38,12 +40,18 @@ function OpenModalWindow(dayDate)
                 try
                 {
                     var formattedDate = new Date(data[0].event_date).toLocaleDateString();
+
                     CreateModalWindow(formattedDate, data);
                 }
                 catch
                 {
-                    $(".modalData").text("В этот день у тебя нет никаких событий и планов ОТДЫХАЙ! Ты это заслужил)");
-                    ButtonCreate();
+                    $(".modalData").empty();
+
+                    var eventText = $("<span>")
+                        .addClass("ModalEventText")
+                        .text("В этот день у тебя нет никаких событий и планов ОТДЫХАЙ! Ты это заслужил)");
+                    $(".modalData").append(eventText);
+
                 }    
             },
 
@@ -54,10 +62,9 @@ function OpenModalWindow(dayDate)
 
 
 
-function CloseModalWindow_AddEventListener()
+function CloseModalWindow()
 {
     $(".modalData").text("");
-
     var modal = document.getElementsByClassName("modal")[0];
     modal.style.display = "none";
     var overlay = document.getElementsByClassName("overlay")[0];
@@ -71,9 +78,9 @@ function CreateModalWindow(formattedDate, data)
 { 
     $(".modalData").empty();
 
-    var header = $("<h2>").
-        addClass("modalTitle").
-        text("События на " + formattedDate);
+    var header = $("<h2>")
+        .addClass("modalTitle")
+        .text("События на " + formattedDate);
     $(".modalData").append(header);
 
     data.forEach(obj =>
@@ -102,21 +109,12 @@ function CreateModalWindow(formattedDate, data)
             .attr("id", obj.event_id);
         eventElement.append(buttonEdit);
 
+        
 
         $(".modalData").append(eventElement);
     });
 
-    ButtonCreate(); 
-
 
     DeleteButton_AddEventListener();
     EditButton_AddEventListener();
-}
-
-function ButtonCreate()
-{
-    var buttonCreate = $("<button>")
-        .text("Создать новое событие")
-        .addClass("buttonCreate");
-    $(".modalData").append(buttonCreate);
 }

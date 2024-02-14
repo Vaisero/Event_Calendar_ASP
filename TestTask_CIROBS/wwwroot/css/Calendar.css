@@ -50,6 +50,7 @@ button {
 }
 
 main {
+    position: relative;
     min-height: calc(82vh - 30px - 18px);
     width: 100%;
 }
@@ -172,17 +173,13 @@ main {
     border-radius: 8px;
 }
 
-.buttonCreate {
+#createEvent {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    position: fixed;
-    left: 50%;
+    position: relative;
+    left: 175px;
     transform: translateX(-50%);
-
     width: 356px;
     height: 51px;
-
     background-color: #4286f4;
     font-size: 27px;
     color: white;
@@ -190,15 +187,16 @@ main {
     padding: 4px 31px;
     border: none;
     border-radius: 19px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #saveButton {
     display: flex;
     justify-content: space-between;
-    margin-top: 14%;
+    margin-top: 15%;
     margin-left: 79%;
     margin-right: 1%;
-
     background-color: #4286f4;
     font-size: 21px;
     color: white;
@@ -213,7 +211,6 @@ main {
     justify-content: space-between;
     margin-top: -14%;
     margin-left: -8%;
-
     background-color: #4286f4;
     font-size: 23px;
     color: white;
@@ -223,17 +220,17 @@ main {
     border-radius: 8px;
 }
 
-#nameInput {
+#dateInput {
     display: flex;
     -webkit-flex-direction: inherit;
-    font-size: 25px;
+    font-size: 20px;
     margin-bottom: 25px;
     margin-left: auto;
     margin-right: auto;
     color: #333399;
 }
 
-#dateInput {
+#nameInput {
     display: flex;
     -webkit-flex-direction: inherit;
     font-size: 20px;

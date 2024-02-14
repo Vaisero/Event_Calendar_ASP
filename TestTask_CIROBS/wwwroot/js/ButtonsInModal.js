@@ -2,7 +2,7 @@
 
 $(".modalClose").click(function ()
 {
-    CloseModalWindow_AddEventListener();
+    CloseModalWindow();
 });
 
 function DeleteButton_AddEventListener()
@@ -40,8 +40,8 @@ function EditButton_AddEventListener()
     $(".buttonEdit").on('click', function (event)
     {
         var id = this.id;
-        
-        EditButtonCreate(id);
+
+        EditButton_Create(id);
 
 
         $("#saveButton").click(function ()
@@ -76,12 +76,58 @@ function EditButton_AddEventListener()
 
         $("#cancelButton").click(function ()
         {
-            CloseModalWindow_AddEventListener();
+            CloseModalWindow();
         });
     });
 }
 
-function EditButtonCreate(id)
+function CreateButton_AddEventListener()
+{
+    $("#createEvent").on('click', function (event)
+    {
+
+        CreateButton_Create();
+
+
+        $("#saveButton").click(function ()
+        {
+            if (confirm("Вы точно хотите сохранить это событие?") == true)
+                if ($("#nameInput").val() && $("#dateInput").val() && $("#categoryInput").val())
+                    $.ajax(
+                        {
+                            url: "/Calendar/GetFunction_EventCreate",
+                            method: "GET",
+                            data: { name: $("#nameInput").val(), date: $("#dateInput").val(), category: $("#categoryInput").val() },
+
+                            success: function (data)
+                            {
+                                alert("Событие успешно создано!");
+
+                                const dayDate = data.year + "-" + data.month + "-" + data.day;
+                                FillColor(data.month, data.year);
+                                OpenModalWindow(dayDate);
+                            },
+
+                            error: function (data)
+                            {
+                                console.log(data);
+                                alert("Ошибка: Произошла ошибка с созданием события");
+                            }
+                        }
+                    );
+                else
+                    alert("Ошибка: Заполните все поля!")
+        });
+
+        $("#cancelButton").click(function ()
+        {
+            CloseModalWindow();
+        });
+
+    });
+}
+
+function EditButton_Create(id)
 {
     $(".modalData").empty();
 
@@ -103,7 +149,7 @@ function EditButtonCreate(id)
 
                 eventElement.append("<input type=\"text\" id=\"nameInput\" value=\"" + data.event_name + "\">");
 
-                var tmp_id = data.category_id;
+                var real_id = data.category_id;
 
                 $.ajax(
                     {
@@ -115,7 +161,7 @@ function EditButtonCreate(id)
                             var selectStr = "<select id=\"categoryInput\">";
                             data.forEach(obj =>
                             {
-                                selectStr += "<option value=\"" + obj.category_id + "\"" + (tmp_id == obj.category_id ? "selected" : "") + " > " + obj.category_name + "</option > "
+                                selectStr += "<option value=\"" + obj.category_id + "\"" + (real_id == obj.category_id ? "selected" : "") + " > " + obj.category_name + "</option > "
                             });
 
                             selectStr += "</select>";
@@ -135,6 +181,53 @@ function EditButtonCreate(id)
             {
                 console.log(data);
                 alert("Ошибка: Произошла ошибка с заполнением полей событий");
+            }
+        }
+    );
+
+    eventElement.append("<button id=\"saveButton\">Сохранить</button>");
+
+    eventElement.append("<button id=\"cancelButton\">Отменить</button>");
+
+    $(".modalData").append(eventElement);
+}
+
+function CreateButton_Create()
+{
+    var modal = document.getElementsByClassName("modal")[0];
+    modal.style.display = "block";
+    var overlay = document.getElementsByClassName("overlay")[0];
+    overlay.style.opacity = 1;
+    overlay.style.visibility = "visible";
+    
+    $(".modalData").empty();
+
+    var eventElement = $("<div>").addClass("event");
+
+    eventElement.append("<input type=\"date\" id=\"dateInput\" value=\"\">");
+
+    eventElement.append("<input type=\"text\" placeholder=\"Название события\" id=\"nameInput\" value=\"\">");
+
+    $.ajax(
+        {
+            url: "/Calendar/Get_CategoryNames",
+            method: "GET",
+
+            success: function (data)
+            {
+                var selectStr = "<select id=\"categoryInput\">";
+                data.forEach(obj =>
+                {
+                    selectStr += "<option value=\"" + obj.category_id + "\"> " + obj.category_name + "</option > "
+                });
+                selectStr += "</select>";
+
+                eventElement.append(selectStr);
+            },
+            error: function (data)
+            {
+                console.log(data);
+                alert("Ошибка: Произошла ошибка с заполнением категорий событий");
             }
         }
     );
