@@ -1,9 +1,7 @@
 ﻿namespace TestTask_CIROBS.Models
 {
-    public class CategoryColorModel
+    public class CategoryColorModel : CategoryModel
     {
         public int event_date { get; set; }
-
-        public string category_color { get; set; }
     }
 }

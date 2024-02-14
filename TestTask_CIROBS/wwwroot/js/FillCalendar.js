@@ -48,7 +48,7 @@ function FillColor(month, year)
 {
     $.ajax(
         {
-            url: "/Calendar/GetCategoryColor",
+            url: "/Calendar/GetFunction_CategoryColor",
             method: "GET",
             data: { month: month, year: year },
 
@@ -59,10 +59,12 @@ function FillColor(month, year)
                 {
                     $("#" + obj.event_date).css("background-color", obj.category_color)
                 });
-
             },
 
-            error: function (){}
+            error: function ()
+            {
+                alert("Произошла ошибка");
+            }
         }
     );
 }

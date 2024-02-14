@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Diagnostics;
 using Npgsql;
-using System;
 using System.Data;
 using System.Diagnostics;
 using TestTask_CIROBS.Models;
@@ -9,7 +9,7 @@ namespace TestTask_CIROBS.Controllers
 {
     public class CalendarController : Controller
     {
-        public IActionResult Get_EventRead(DateOnly date)
+        public IActionResult GetFunction_EventRead(DateOnly date)
         {
             using (var connection = new NpgsqlConnection(ConnectionString()))
             {
@@ -42,7 +42,7 @@ namespace TestTask_CIROBS.Controllers
             }
         }
 
-        public IActionResult GetCategoryColor(int month, int year)
+        public IActionResult GetFunction_CategoryColor(int month, int year)
         {
             using (var connection = new NpgsqlConnection(ConnectionString()))
             {
@@ -86,11 +86,11 @@ namespace TestTask_CIROBS.Controllers
             }
         }
 
-        public IActionResult Get_EventDelete(int id)
+        public IActionResult GetFunction_EventDelete(int id)
         {
             using (var connection = new NpgsqlConnection(ConnectionString()))
             {
-                string sql = "SELECT * from public.event_delete(:p_id)";
+                string sql = "SELECT * from event_delete(:p_id)";
                 connection.Open();
 
                 using (var command = new NpgsqlCommand(sql, connection))
@@ -105,7 +105,8 @@ namespace TestTask_CIROBS.Controllers
                             var EventInfo = new
                             {
                                 month = reader.GetInt32(0),
-                                year = reader.GetInt32(1)
+                                year = reader.GetInt32(1),
+                                day = reader.GetInt32(2)
                             };
                             return Json(EventInfo);
                         }
@@ -115,6 +116,107 @@ namespace TestTask_CIROBS.Controllers
                 }
             }
         }
+
+        public IActionResult GetFunction_EventEdit(int id, string name, DateOnly date, int category)
+        {
+            using (var connection = new NpgsqlConnection(ConnectionString()))
+            {
+                string sql = "SELECT * from event_update(:p_id, :p_name, :p_date, :p_category)";
+                connection.Open();
+
+                using (var command = new NpgsqlCommand(sql, connection))
+                {
+                    command.CommandType = CommandType.Text;
+                    command.Parameters.AddWithValue("p_id", id);
+                    command.Parameters.AddWithValue("p_name", name);
+                    command.Parameters.AddWithValue("p_date", date);
+                    command.Parameters.AddWithValue("p_category", category);
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            var EventInfo = new
+                            {
+                                month = reader.GetInt32(0),
+                                year = reader.GetInt32(1),
+                                day = reader.GetInt32(2)
+                            };
+                            return Json(EventInfo);
+                        }
+                        else
+                            return NotFound();
+                    }
+                }
+            }
+        }
+
+
+
+
+        public IActionResult Get_EventById(int id)
+        {
+            using (var connection = new NpgsqlConnection(ConnectionString()))
+            {
+                string sql = "Select * from public.event where event_id = :p_id";
+                connection.Open();
+
+                using (var command = new NpgsqlCommand(sql, connection))
+                {
+                    command.CommandType = CommandType.Text;
+                    command.Parameters.AddWithValue("p_id", id);
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            var EventInfo = new
+                            {
+                                event_name = reader.GetString(1),
+                                event_date = reader.GetDateTime(2),
+                                category_id = reader.GetInt32(3)
+                            };
+                            return Json(EventInfo);
+                        }
+                        else
+                            return NotFound();
+                    }
+                }
+            }
+        }
+
+        public IActionResult Get_CategoryNames()
+        {
+            using (var connection = new NpgsqlConnection(ConnectionString()))
+            {
+                string sql = "select category_id, category_name from public.category";
+                connection.Open();
+
+                using (var command = new NpgsqlCommand(sql, connection))
+                {
+                    command.CommandType = CommandType.Text;
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        List<CategoryModel> events = new List<CategoryModel>();
+
+                        while (reader.Read())
+                        {
+                            var EventInfo = new CategoryModel
+                            {
+                                category_id = reader.GetInt32(0),
+                                category_name = reader.GetString(1)
+                            };
+                            events.Add(EventInfo);
+                        }
+                        return Json(events);
+                    }
+                }
+            }
+        }
+
+
+
 
 
         public IActionResult Index()

@@ -19,7 +19,7 @@ function ButtonOnDay(currentMonth, currentYear)
 
 function OpenModalWindow(dayDate)
 {
-    CloseModalWindow();
+    $(".modalData").text("");
 
     var modal = document.getElementsByClassName("modal")[0];
     modal.style.display = "block";
@@ -29,7 +29,7 @@ function OpenModalWindow(dayDate)
 
     $.ajax(
         {
-            url: "/Calendar/Get_EventRead",
+            url: "/Calendar/GetFunction_EventRead",
             method: "GET",
             data: { date: dayDate },
 
@@ -54,19 +54,15 @@ function OpenModalWindow(dayDate)
 
 
 
-function CloseModalWindow()
+function CloseModalWindow_AddEventListener()
 {
-    var modalClose = document.getElementsByClassName("modalClose")[0];
     $(".modalData").text("");
 
-    modalClose.addEventListener("click", function ()
-    {
-        var modal = document.getElementsByClassName("modal")[0];
-        modal.style.display = "none";
-        var overlay = document.getElementsByClassName("overlay")[0];
-        overlay.style.opacity = 0;
-        overlay.style.visibility = "hidden";
-    });
+    var modal = document.getElementsByClassName("modal")[0];
+    modal.style.display = "none";
+    var overlay = document.getElementsByClassName("overlay")[0];
+    overlay.style.opacity = 0;
+    overlay.style.visibility = "hidden";
 }
 
 
@@ -100,7 +96,6 @@ function CreateModalWindow(formattedDate, data)
             .attr("id",obj.event_id);
         eventElement.append(buttonDelete);
        
-
         var buttonEdit = $("<button>")
             .text("Изменить")
             .addClass("buttonEdit")
@@ -114,7 +109,8 @@ function CreateModalWindow(formattedDate, data)
     ButtonCreate(); 
 
 
-    buttonDeleteAddEventListener();
+    DeleteButton_AddEventListener();
+    EditButton_AddEventListener();
 }
 
 function ButtonCreate()
