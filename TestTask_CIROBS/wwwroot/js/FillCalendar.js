@@ -1,8 +1,8 @@
 ﻿
-function FillCalendar(month, year, today, currentMonth, currentDate, currentYear)
+function FillCalendar(currentMonth, currentYear)
 {
-    var firstDay = new Date(year, month - 1, 0).getDay();
-    var daysInMonth = new Date(year, month, 0).getDate();
+    var firstDay = new Date(currentYear, currentMonth - 1, 0).getDay();
+    var daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
 
     var calendarBody = $("#calendarBody");
     calendarBody.empty();
@@ -26,7 +26,8 @@ function FillCalendar(month, year, today, currentMonth, currentDate, currentYear
                     cell.textContent = date;
                     cell.id = date;
 
-                    if (date === today && currentMonth === currentDate.getMonth() + 1 && currentYear === currentDate.getFullYear())
+                    var today = new Date();
+                    if (date === today.getDate() && currentMonth === today.getMonth() + 1 && currentYear === today.getFullYear())
                         cell.classList.add("current_day");
 
                     row.append(cell);
@@ -40,7 +41,7 @@ function FillCalendar(month, year, today, currentMonth, currentDate, currentYear
                     }
         }
         calendarBody.append(row);
-        FillColor(month, year);
+        FillColor(currentMonth, currentYear);
     }
 }
 

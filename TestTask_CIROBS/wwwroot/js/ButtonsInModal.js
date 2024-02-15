@@ -58,9 +58,7 @@ function EditButton_AddEventListener()
                         {
                             alert("Событие успешно изменено!");
 
-                            const dayDate = data.year + "-" + data.month + "-" + data.day;
-                            FillColor(data.month, data.year);
-                            OpenModalWindow(dayDate);
+                            ShowCalendar(data.month, data.year)
                         },
 
                         error: function (data)
@@ -103,9 +101,8 @@ function CreateButton_AddEventListener()
                             {
                                 alert("Событие успешно создано!");
 
-                                const dayDate = data.year + "-" + data.month + "-" + data.day;
-                                FillColor(data.month, data.year);
-                                OpenModalWindow(dayDate);
+                                ShowCalendar(data.month, data.year)
+                                
                             },
 
                             error: function (data)
